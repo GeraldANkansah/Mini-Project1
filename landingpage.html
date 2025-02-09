@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <title>Three Column Layout</title>
+
+    <style>
+      html,
+      body {
+        margin: 0;
+        font-family: Arial, Helvetica, sans-serif;
+        padding: 0;
+        height: 100vh;
+        background-color: white;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      input{
+            border-radius: 15px;
+            padding: 10px;
+            border: 2px solid #ccc;
+            width: 250px;
+      }
+
+      .header {
+        background-color: #3b82f6;
+        padding: 20px;
+        text-align: center;
+        color: white;
+        font-size: 1.5em;
+        font-weight: bold;
+        width: 100%;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .container {
+        display: flex;
+        justify-content: space-between;
+        width: 90%;
+        max-width: 1200px;
+        margin-top: 20px;
+      }
+
+      .column {
+        flex: 1;
+        margin: 10px;
+        padding: 20px;
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        transition: transform 0.2s ease-in-out;
+      }
+
+      .column:hover {
+        transform: scale(1.02);
+      }
+
+      .hidden-content {
+        display: none;
+        margin-top: 10px;
+        padding: 10px;
+        background-color: turquoise;
+        border-radius: 5px;
+      }
+      .hidden-content-2{
+        display: none;
+        margin-top: 10px;
+        padding: 10px;
+        background-color: rgb(245, 65, 95);
+        border-radius: 5px;
+      }
+
+      .toggle-click {
+        cursor: pointer;
+      }
+
+      h1, h2 {
+        color: #333;
+        font-family: Arial, Helvetica, sans-serif;
+      }
+      .enter-number{
+        margin-bottom: 10px;
+      }
+
+      button {
+        padding: 12px 20px;
+        border-radius: 25px;
+        border: none;
+        background-color: #3b82f6;
+        color: white;
+        font-size: 16px;
+        cursor: pointer;
+        width: 100%;
+      }
+
+      button:hover {
+        background-color: #2563eb;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="header">
+      Welcome to your Digital Keypad! Your go-to Number Converter!
+    </div>
+
+    <div class="container">
+      <div class="column">
+        <h1>What is this Keypad?</h1>
+        <p>
+          You may enter and work with numbers in binary, octal, decimal, and
+          hexadecimal systems with the Digital Keypad, a strong yet
+          user-friendly tool. This application makes conversions simple,
+          regardless of whether you're a student, programmer, or tech
+          enthusiast.
+        </p>
+        <h2>Key Features:</h2>
+        <ul>
+          <li>Real-Time Conversion: See how numbers change across different bases.</li>
+          <li>Intuitive Interface: Non-complex design with an easy number entry system.</li>
+          <li>Interactive Controls: Increment/Decrement numbers easily.</li>
+        </ul>
+      </div>
+
+      <div class="column">
+        <h1>Try a quick demo!</h1>
+        <p>Enter your number and click below to see a conversion from Decimal to Binary!</p>
+        <input type="text" id="num1" placeholder="Enter number" class="enter-number"/>
+        <button onclick="convert();toggleConverter()">Convert</button>
+        <div class="hidden-content">
+          <p id="binaryOutput">Binary value:</p>
+        </div>
+        <div class="hidden-content-2">
+            <p>Sign up to get the rest of the convertions!</p>
+        </div>
+      </div>
+
+      <div class="column">
+        <h1>Sign up Now!</h1>
+        <p>Click on these links to find out more!</p>
+        <p>Log into your account!</p>
+        <a href="loginpage.html"><button>Login</button></a>
+        <p>Don't have an account? Sign up!</p>
+        <a href="account.html"><button>Sign up</button></a>
+      </div>
+    </div>
+    <script>
+      function convert() {
+        const num = parseFloat(document.getElementById("num1").value);
+        if (!isNaN(num)) {
+          binaryval = num.toString(2);
+          document.getElementById("binaryOutput").innerText = "Binary value: " + binaryval;
+        }
+      }
+      function toggleConverter() {
+        let content = document.querySelector(".hidden-content");
+        let content2= document.querySelector(".hidden-content-2");
+        if (content.style.display === "none" || content.style.display === "") {
+          content.style.display = "block";
+        }
+        if(content2.style.display === "none" || content2.style.display === ""){
+          content2.style.display = "block";
+        }
+      }
+    </script>
+  </body>
+</html>

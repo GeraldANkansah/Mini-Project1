@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Digital Keypad</title>
+  </head>
+  <style>
+    html,
+    body {
+      background-color: #86adf1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    input {
+      border-radius: 15px;
+      padding: 10px;
+      border: 2px solid #ccc;
+      width: 250px;
+    }
+    .normal-button {
+      background-color: white;
+      color: black;
+      border: none;
+      border-radius: 10px;
+      font-family: sans-serif;
+      padding: 10px 10px;
+    }
+    .seperate {
+      margin-bottom: 10px;
+    }
+    .card {
+      box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+      transition: 0.3s;
+      padding: 20px;
+      display: flex;
+      flex-direction: row;
+      position: relative;
+      width: 80vw;
+      animation: fadeInAnimation ease 10s;
+      animation-iteration-count: 1;
+      animation-fill-mode: forwards;
+      background: #2e3571;
+      border-radius: 10px;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .card:hover{
+        filter: drop-shadow(10px 10px 20px rgba(36,36,36,0.5));
+    }
+    .left-section, .middle-section, .right-section {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 10px;
+    }
+    .left-section {
+      flex: 1;
+      align-items: flex-start;
+    }
+    .middle-section {
+      flex: 1;
+      justify-content: center;
+    }
+    .right-section {
+      flex: 1;
+      align-items: flex-end;
+    }
+    .other-buttons-container, .other-items {
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 5s ease-in-out, visibility 5s ease-in-out;
+    }
+    .visible {
+      opacity: 1 !important;
+      visibility: visible !important;
+    }
+    h1, p, label, h3 {
+      color: white;
+      font-family: sans-serif;
+    }
+    .other-buttons button {
+      display: block;
+      margin-bottom: 5px;
+      border-radius: 12px;
+      padding: 10px;
+      border: 2px solid skyblue;
+    }
+    .other-buttons button:hover {
+      background-color: #2e3571;
+      color: white;
+    }
+    ul{
+        color: white;
+    }
+    @keyframes fadeInAnimation {
+      0% { opacity: 0; }
+      100% { opacity: 1; }
+    }
+  </style>
+  <body>
+    <div class="card">
+      <div class="left-section">
+        <h1>Digital Keypad:</h1>
+        <input type="text" id="num1" placeholder="Enter number(s), comma-separated" />
+        <div class="seperate"></div>
+        <button onclick="convert();" class="normal-button">Convert</button>
+      </div>
+      <div class="middle-section">
+        <div class="other-buttons-container">
+          <div class="other-buttons">
+            <button onclick="counter5()">Increment by 5</button>
+            <button onclick="counterN5()">Decrement by 5</button>
+            <button onclick="counter1()">Increment by 1</button>
+            <button onclick="counterN1()">Decrement by 1</button>
+          </div>
+        </div>
+      </div>
+      <div class="right-section">
+        <div class="other-items">
+          <label for="base">Select Base:</label>
+          <div class="seperate"></div>
+          <input type="number" id="base" min="2" max="36" value="10" />
+          <button onclick="setDefaultBase()" class="normal-button">Set Default Base</button>
+          <p id="binaryOutput">Binary:</p>
+          <p id="octalOutput">Octal:</p>
+          <p id="hexOutput">Hexadecimal:</p>
+          <p id="DecOutput">Decimal:</p>
+          <p id="customBaseOutput">Custom Base:</p>
+          <h3>Conversion History:</h3>
+          <ul id="historyList" class="history"></ul>
+        </div>
+      </div>
+    </div>
+    <script>
+      let conversionHistory = [];
+      let defaultBase = 10;
+
+      function counter5() {
+        let num = parseFloat(document.getElementById("num1").value) || 0;
+        num += 5;
+        document.getElementById("num1").value = num;
+        convert();
+      }
+      function counterN5() {
+        let num = parseFloat(document.getElementById("num1").value) || 0;
+        num -= 5;
+        document.getElementById("num1").value = num;
+        convert();
+      }
+      function counter1() {
+        let num = parseFloat(document.getElementById("num1").value) || 0;
+        num += 1;
+        document.getElementById("num1").value = num;
+        convert();
+      }
+      function counterN1() {
+        let num = parseFloat(document.getElementById("num1").value) || 0;
+        num -= 1;
+        document.getElementById("num1").value = num;
+        convert();
+      }
+      function setDefaultBase() {
+        let newBase = parseInt(document.getElementById("base").value);
+        if (newBase >= 2 && newBase <= 36) {
+          defaultBase = newBase;
+          alert(`Default base set to ${defaultBase}`);
+        } else {
+          alert("Please enter a base between 2 and 36.");
+        }
+      }
+      function convert() {
+        let inputText = document.getElementById("num1").value;
+        let numbers = inputText.split(",").map(num => parseFloat(num.trim())).filter(num => !isNaN(num));
+        if (numbers.length === 0) return alert("Please enter at least one valid number.");
+
+        let binaryVals = numbers.map(num => num.toString(2)).join(", ");
+        let octalVals = numbers.map(num => num.toString(8)).join(", ");
+        let hexVals = numbers.map(num => num.toString(16).toUpperCase()).join(", ");
+        let customVals = numbers.map(num => num.toString(defaultBase)).join(", ");
+
+        document.getElementById("binaryOutput").innerText = "Binary: " + binaryVals;
+        document.getElementById("octalOutput").innerText = "Octal: " + octalVals;
+        document.getElementById("hexOutput").innerText = "Hexadecimal: " + hexVals;
+        document.getElementById("DecOutput").innerText = "Decimal: " + numbers.join(", ");
+        document.getElementById("customBaseOutput").innerText = `Base ${defaultBase}: ` + customVals;
+
+        conversionHistory.push(`${inputText} → Binary: ${binaryVals}, Octal: ${octalVals}, Hex: ${hexVals}, Base ${defaultBase}: ${customVals}`);
+        if (conversionHistory.length > 5) {
+          conversionHistory.shift(); 
+        }
+        updateHistory();
+
+        document.querySelector(".other-buttons-container").classList.add("visible");
+        document.querySelector(".other-items").classList.add("visible");
+      }
+
+      function updateHistory() {
+        let historyList = document.getElementById("historyList");
+        historyList.innerHTML = "";
+        conversionHistory.slice().reverse().forEach(entry => {
+          let li = document.createElement("li");
+          li.textContent = entry;
+          historyList.appendChild(li);
+        });
+      }
+    </script>
+  </body>
+</html>
